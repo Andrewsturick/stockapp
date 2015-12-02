@@ -1,0 +1,11 @@
+<div class="mainview col-xs-offset-3 col-xs-6">
+  <form class="form-auth" ng-submit="getUserInfo()">
+    <h2>Log In</h2>
+    <p class="text-warning">{{error_message}}</p>
+    <input type="username" class='form-control' placeholder="username" ng-model="user.username">
+    <input type="password" id="password" class='form-control' placeholder="password" ng-model="user.password">
+    <input type="submit" value="Log in" class="btn btn-primary">
+  </form>
+  <button ng-click="authenticate('google')">google</button>atom
+
+</div>

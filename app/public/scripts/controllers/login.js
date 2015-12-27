@@ -8,17 +8,21 @@
  * Controller of the commonApp
  */
 angular.module('stockDogApp')
-  .controller('LoginCtrl', function ($scope, $location, LoginService, $auth) {
-  $scope.user = {
-    username: "",
-    password:""
-  }
+  .controller('LoginCtrl', function ($scope, $location, LoginService, userModelService, $auth, jwtHelper) {
 
+    $scope.user = {
+      username: "",
+      password:""
+    }
+
+
+///////social login
 
   $scope.authenticate = function(provider) {
     $auth.authenticate(provider)
     .then(function(res) {
-      console.log(res);
+      console.log(res)
+      console.log('authenticate');
     })
     .catch(function(err){
       console.error(err);
@@ -27,22 +31,30 @@ angular.module('stockDogApp')
 
 
   $scope.getUserInfo = function(){
-      LoginService.loadModelFromDb($scope.user.username)
+      if($scope.user.username ==="" || $scope.user.password===""){swal("WHOOPS!", "Please enter username and password", "error");;}
+      LoginService.loadModelFromDb($scope.user)
       .then(function(user,err){
-        console.log(user)
-        if(!user.data[0]){
+        try{
+            var decoded = jwtHelper.decodeToken(user.data);
+            localStorage['user_token']= user.data
+            userModelService.currentUser = decoded.sub;
+            $scope.$watch(function(){return userModelService.currentUser}, function(n, o){
+              $location.path("/home");
+            })
+        } catch(e){
+            swal("whoops!!", "Invalid username or password", "error");
+        }
+        if(user.data==='none found' || user.data==='false' || !user.data){swal("whoops!!", "Invalid username or password", "error");}
+        if(!user.data){
           swal("Oops...", "Invalid username or password!", "error");
         }
-          else if ($scope.user.password===user.data[0].password){
-            localStorage.user = (user.data[0].username);
-            localStorage.nextListNumber = (user.data[0].nextWatchlistNumber);
-            localStorage.watchlists = (user.data[0].watchlists);
-            $location.path("/dashboard");
-
-         } else{
-           console.log('password error')
-            swal("Oops...", "Invalid username or password", "error");
-          }
       })
     }
+
+    ////manual login
+
+
+
+
+
   });

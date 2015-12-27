@@ -8,8 +8,7 @@
  * Controller of the stockDogApp
  */
 angular.module('stockDogApp')
-  .controller('HomeCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      console.log('hello')
-    ];
+  .controller('HomeCtrl', function ($scope, checkAuthService ) {
+
+    checkAuthService.redirectIfNotAuthed()
   });

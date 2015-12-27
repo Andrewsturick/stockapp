@@ -18,30 +18,37 @@ var app = angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'mgcrea.ngStrap',
+    'LocalStorageModule',
+    'angular-jwt'
   ])
 
-  .config(function ($routeProvider, $authProvider) {
-    $routeProvider
-      .when('/home', {
+  .config(function ($stateProvider, $authProvider) {
+    $stateProvider
+      .state('home', {
+        url:'/home',
         templateUrl: 'views/main.html',
         controller: 'HomeCtrl'
       })
-      .when('/login', {
+      .state('login', {
+        url:'/login',
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
-      .when('/dashboard', {
+      .state('dashboard', {
+        url:'/dashboard',
         templateUrl: 'views/dashboard.html',
         controller: 'MainCtrl'
       })
-      .when('/register', {
+      .state('register', {
+        url:'/register',
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl'
       })
-      .otherwise({
-        redirectTo: '/home'
-      });
+      // .otherwise({
+      //   redirectTo: '/home'
+      // });
 
 
       $authProvider.google({

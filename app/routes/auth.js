@@ -21,7 +21,6 @@ router.post('/google', function(req, res) {
     redirect_uri: 'http://localhost:3000',
     grant_type: 'authorization_code'
   };
-  console.log()
   // Step 1. Exchange authorization code for access token.
   request.post(accessTokenUrl, { json: true, form: params }, function(err, response, token) {
     var accessToken = token.access_token;
@@ -29,7 +28,8 @@ router.post('/google', function(req, res) {
     console.log('accessToken:', accessToken)
     // Step 2. Retrieve profile information about the current user.
     request.get({ url: peopleApiUrl, headers: headers, json: true }, function(err, response, profile) {
-      console.log('google profile:', profile);
+
+      console.log('google profsdfile:', profile);
       if (profile.error) {
         return res.status(500).send({message: profile.error.message});
       }
@@ -41,6 +41,7 @@ router.post('/google', function(req, res) {
           }
           var token = req.headers.authorization.split(' ')[1];
           var payload = jwt.decode(token, process.env.JWT_SECRET);
+          console.log(payload);
           User.findById(payload.sub, function(err, user) {
             if (!user) {
               return res.status(400).send({ message: 'User not found' });
@@ -58,7 +59,7 @@ router.post('/google', function(req, res) {
         // Step 3b. Create a new user account or return an existing one.
         User.findOne({ google: profile.sub }, function(err, existingUser) {
           if (existingUser) {
-
+            console.log('existing user');
             return res.send({ token: existingUser.createJWT() });
 
           }
@@ -66,9 +67,11 @@ router.post('/google', function(req, res) {
           user.google = profile.sub;
           user.picture = profile.picture.replace('sz=50', 'sz=200');
           user.displayName = profile.name;
+          user.createUser()
           user.save(function(err) {
 
             var token = user.createJWT();
+
             res.send({ token: token });
           });
         });

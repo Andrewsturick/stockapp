@@ -1,54 +1,57 @@
-        <legend> Create Your Profile  </legend>
-<div class="row">
-
-<div class="col-xs-4">
-
-         <addpicturepanel class="picture-upload-panel"></addpicturepanel>
-
-</div>
-<div class="mainview col-xs-12 col-md-8">
-<form class="form">
+<legend> Create Your Profile  </legend>
+  <div class="row">
+    <div class="col-xs-4">
+       <addpicturepanel class="picture-upload-panel"></addpicturepanel>
+    </div>
+    <div class="mainview col-xs-12 col-md-8">
+<form class="form" ng-submit = 'createUser()'>
     <fieldset >
         <p>
         <label> Name </label>
-        <input type="email"
+        <input type="text"
                 id=txtName
-
+                ng-model="name"
                 value=""
-                class="form-control" /></p>
+                class="form-control"
+
+                 /></p>
         <p>
         <label> Email </label>
         <input type="text"
                 id="txtEmail"
+                ng-model="email"
                 value=""
-                class="form-control"/></p>
+                class="form-control"
+
+                /></p>
         <p>
         <label> Username </label>
         <input type="text"
                 id=txtUsername
                 value=""
-                class="form-control" /></p>
-                <p>
-                <label>Confirm Password</label>
-                <input type="password"
-                        id=pwdPassword
-                        placeholder="password"
-                        class="form-control" /></p>
+                class="form-control"
+                ng-model="username" /></p>
+
+        <p>
+        <label>Confirm Password</label>
+        <input type="password"
+                id=pwdPassword
+                placeholder="password"
+                class="form-control"
+                ng-model="password" /></p>
         <p>
         <label>Confirm Password</label>
         <input type="password"
                 id=pwdPassword
                 placeholder="confirm password"
-                class="form-control" /></p>
+                class="form-control"
+                ng-model = "passwordConfirm"/></p>
         </fieldset>
 
-
-</form>
-
 </div>
 </div>
 
-<form>
+
     <fieldset>
     <legend> Profile Info (optional) </legend>
     <p>
@@ -60,8 +63,7 @@
     <p>
 
     <label> How often do you trade? </label>
-    <select id="selTradeActivity">
-        <option style='display:none;'
+    <select id="selTradeActivity" ng-model="tradeFrequency">
          value="selNone" disabled selected>Please Select One</option>
         <option value="sel0_2">0-2 Trades Per Week</option>
         <option value="sel2_5">2-5 Trades Per Week</option>
@@ -69,66 +71,22 @@
         <option value="sel10-25">10-25 Trades Per Week</option>
         <option value="sel25_50">25-50 Trades Per Week</option>
         <option value="sel50+">50+ Trades Per Week</option></select></p>
-    <p>
-     <p>
-        <label> What are you most interested in learning about? </label></p>
-        <table border="1">
-        <tr>
-        <td>
+      </p>
         <p>
-         <input type="checkbox"
-                id=""
-                value="" /> Long Term / Value Investing</p>
-         <p>
-        <input type="checkbox"
-                id=""
-                value=""  /> Technical Trading/ Charting</p>
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" /> Options </p>
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" /> Stocks and Equities</p>
-        </td>
-
-         <td id="tester">
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" /> ETF's</p>
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" /> Quantitative Finance/Trading</p>
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" /> Futures and Commodities </p>
-         <p class="equities">
-        <input type="checkbox"
-                id=""
-                value="" /> Currencies (currencies futures)</p>
-                </td>
-        <td>
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" />Global Equities and Markets</p>
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" /> Penny Stocks</p>
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" /> Bonds, Notes, Interest Rates and Inflation</p>
-         <p>
-        <input type="checkbox"
-                id=""
-                value="" /> Earnings </p></td></tr>
-
-        </table>
+            <label> What are you most interested in learning about? </label>
+        </p>
+          <table border="1">
+            <tr>
+              <td ng-repeat ="array in interests">
+                <div ng-repeat="(i,interest) in array">
+                  <label for="interest">{{interest.assetClass.title}}</label>
+                  <select name="interest" ng-model="following[interest.assetClass.title]">
+                    <option ng-repeat="number in numberArr()" ng-nodel="" value="{{number}}">{{number}}</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+          </table>
         </fieldset>
+        <button ng-click ='createUser()'>Create User</button>
     </form>
